@@ -3,7 +3,8 @@ import "dotenv/config";
 import cors from "cors";
 import mongoose from "mongoose";
 import userRoutes from "./routes/users";
-import authRoutes from "./routes/auth"
+import authRoutes from "./routes/auth";
+import cookieParser from "cookie-parser";
 
 mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string)
 .then(() => {
@@ -16,6 +17,7 @@ mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string)
 const app = express();
 const port = 8000;
 
+app.use(cookieParser());
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 app.use(
