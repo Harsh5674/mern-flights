@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAppContext } from "../contexts/AppContext";
+import SignOutButton from "./SignOutButton";
 
 
 function Header(){
@@ -26,7 +27,7 @@ function Header(){
               >
                 My Flights
               </Link>
-              <button>Sign Out</button>
+              <SignOutButton />
             </>
           ) : (
             <Link
