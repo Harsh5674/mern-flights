@@ -42,6 +42,10 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/my-flights",myFlightRoutes);
 
+app.get("*", (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
+});
+
 app.get("/test", async (req:Request,res:Response) => {
        //res.json({message: " Working!"});
        res.send("<h1>Working</h1>");
