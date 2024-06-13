@@ -1,0 +1,23 @@
+export const flightNames = [
+    "IndiGo",
+    "AirIndia",
+    "Qatar Airways",
+    "Qantas",
+    "Emirates",
+    "British Airways",
+    "CatHay Pacific",
+    "Etihad Airways",
+    "Malaysia Airlines",
+    "Thai Airways",
+    "Virgin Australia",
+    "Air Canada",
+    "Air France",
+    "Virgin Atlantic",
+    "jetBlue Airways",
+    "Ethiopian Airlines",
+    "Delta Airlines",
+    "Singapore Airlines",
+    "Turkish Airlines",
+    "United Airlines",
+  ];
+  

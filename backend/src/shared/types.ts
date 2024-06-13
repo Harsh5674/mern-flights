@@ -4,4 +4,27 @@ export type UserType = {
     password: string;
     firstName: string;
     lastName: string;
-  };
+};
+
+export type FlightType = {
+  _id: string;
+  userId: string;
+  name: string;
+  fromCity: string;
+  toCity: string;
+  adultCount: number;
+  childCount: number;
+  class:string;
+  economyAdultPrice: number;
+  economyChildPrice: number;
+  businessChildPrice: number;
+  businessAdultPrice: number;
+  totalPrice: number;
+  departureDate:Date;
+  departureTime:string;
+  arrivalTime:string;
+  flightTime:string;
+  imageUrls: string[];
+  lastUpdated: Date;
+  //bookings: BookingType[];
+};

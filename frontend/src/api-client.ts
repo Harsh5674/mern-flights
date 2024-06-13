@@ -60,4 +60,18 @@ export const register = async (formData: RegisterFormData) => {
       throw new Error("Error during sign out");
     }
   };
+
+  export const addMyFlight = async (flightFormData: FormData) => {
+    const response = await fetch(`${API_BASE_URL}/api/my-flights`, {
+      method: "POST",
+      credentials: "include",
+      body: flightFormData,
+    });
+  
+    if (!response.ok) {
+      throw new Error("Failed to add flight");
+    }
+  
+    return response.json();
+  };
   
