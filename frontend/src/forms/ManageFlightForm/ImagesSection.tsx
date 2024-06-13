@@ -56,7 +56,7 @@ const ImagesSection = () => {
                 return "At least one image should be added";
               }
 
-              if (totalLength > 1) {
+              if (totalLength > 3) {
                 return "Total number of images cannot be more than 1";
               }
 

@@ -48,7 +48,7 @@ router.post("/",
         body("flightTime").notEmpty().withMessage("flightTime is required"),
         body("departureDate").notEmpty().withMessage("departureDate is required"),
     ],
-    upload.array("imageFiles", 1), 
+    upload.array("imageFiles", 3), 
     async (req:Request,res:Response) => {
        try{
         const imageFiles = req.files as Express.Multer.File[];
@@ -71,6 +71,15 @@ router.post("/",
         res.status(500).json({ message: "Error in creting new flight" });
        }
 });
+
+router.get("/", verifyToken, async (req: Request, res: Response) => {
+    try {
+      const flights = await Flight.find();
+      res.json(flights);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching flights" });
+    }
+  });
 
 async function uploadImages(imageFiles: Express.Multer.File[]) {
     const uploadPromises = imageFiles.map(async (image) => {

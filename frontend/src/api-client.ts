@@ -1,6 +1,6 @@
 import { RegisterFormData } from "./pages/Register";
 import { SignInFormData } from "./pages/SignIn";
-//import{ UserType } from "../../backend/src/shared/types";
+import{ FlightType } from "../../backend/src/shared/types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
@@ -38,7 +38,7 @@ export const register = async (formData: RegisterFormData) => {
     return body;
   };
 
-  export const validateToken = async () => {
+  export const validateToken = async (): Promise<{ userId: string; email: string }> => {
     const response = await fetch(`${API_BASE_URL}/api/auth/validate-token`, {
       credentials: "include",
     });
@@ -70,6 +70,18 @@ export const register = async (formData: RegisterFormData) => {
   
     if (!response.ok) {
       throw new Error("Failed to add flight");
+    }
+  
+    return response.json();
+  };
+
+  export const fetchMyFlights = async (): Promise<FlightType[]> => {
+    const response = await fetch(`${API_BASE_URL}/api/my-flights`, {
+      credentials: "include",
+    });
+  
+    if (!response.ok) {
+      throw new Error("Error fetching hotels");
     }
   
     return response.json();
