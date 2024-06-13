@@ -3,6 +3,8 @@ import DetailsSection from "./DetailsSection";
 import NameSection from "./NameSection";
 import GuestsSection from "./GuestSection";
 import ImagesSection from "./ImagesSection";
+import { FlightType } from "../../../../backend/src/shared/types";
+import { useEffect } from "react";
 
 
 export type FlightFormData = {
@@ -26,18 +28,25 @@ export type FlightFormData = {
   };
  
 type Props = {
-    //hotel?: HotelType;
+    flight?: FlightType;
     onSave: (flightFormData: FormData) => void;
     isLoading: boolean;
   };  
 
-const ManageFlightForm = ({ onSave, isLoading}: Props) => {
+const ManageFlightForm = ({ onSave, isLoading,flight}: Props) => {
     const formMethods = useForm<FlightFormData>();
-    const {handleSubmit} = formMethods;
+    const {handleSubmit,reset} = formMethods;
+
+    useEffect(() => {
+        reset(flight);
+      }, [flight, reset]);
 
     const onSubmit = handleSubmit((formDataJson: FlightFormData) => {
         console.log(formDataJson);
         const formData = new FormData();
+        if (flight) {
+            formData.append("flightId", flight._id);
+        }
         formData.append("class",formDataJson.class);
         formData.append("fromCity",formDataJson.fromCity);
         formData.append("toCity",formDataJson.toCity);
@@ -53,6 +62,12 @@ const ManageFlightForm = ({ onSave, isLoading}: Props) => {
         formData.append("name",formDataJson.name);
         formData.append("adultCount",formDataJson.adultCount.toString());
         formData.append("childCount",formDataJson.childCount.toString());
+
+        if (formDataJson.imageUrls) {
+            formDataJson.imageUrls.forEach((url, index) => {
+              formData.append(`imageUrls[${index}]`, url);
+            });
+        }
 
         Array.from(formDataJson.imageFiles).forEach((imageFile) => {
             formData.append(`imageFiles`, imageFile);

@@ -5,6 +5,7 @@ import SignIn from "./pages/SignIn";
 import AddFlight from "./pages/AddFlight";
 import { useAppContext } from "./contexts/AppContext";
 import MyFlights from "./pages/MyFlights";
+import EditFlight from "./pages/EditFlight";
 
 
 const App = () => {
@@ -50,6 +51,14 @@ const App = () => {
                   element={
                     <Layout>
                       <AddFlight />
+                    </Layout>
+                  }
+                />
+                <Route
+                  path="/edit-flight/:flightId"
+                  element={
+                    <Layout>
+                      <EditFlight />
                     </Layout>
                   }
                 />

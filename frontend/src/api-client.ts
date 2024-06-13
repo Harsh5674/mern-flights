@@ -86,4 +86,33 @@ export const register = async (formData: RegisterFormData) => {
   
     return response.json();
   };
+
+  export const fetchMyFlightById = async (flightId: string): Promise<FlightType> => {
+    const response = await fetch(`${API_BASE_URL}/api/my-flights/${flightId}`, {
+      credentials: "include",
+    });
+  
+    if (!response.ok) {
+      throw new Error("Error fetching Flights");
+    }
+  
+    return response.json();
+  };
+
+  export const updateMyFlightById = async (flightFormData: FormData) => {
+    const response = await fetch(
+      `${API_BASE_URL}/api/my-flights/${flightFormData.get("flightId")}`,
+      {
+        method: "PUT",
+        body: flightFormData,
+        credentials: "include",
+      }
+    );
+  
+    if (!response.ok) {
+      throw new Error("Failed to update Flight");
+    }
+  
+    return response.json();
+  };
   

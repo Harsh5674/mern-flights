@@ -81,6 +81,57 @@ router.get("/", verifyToken, async (req: Request, res: Response) => {
     }
   });
 
+  router.get("/:id", verifyToken, async (req: Request, res: Response) => {
+    const id = req.params.id.toString();
+    try {
+      const flight = await Flight.findOne({
+        _id: id,
+        userId: req.userId,
+      });
+      res.json(flight);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching flights" });
+    }
+  });
+
+  router.put(
+    "/:flightId",
+    verifyToken,
+    upload.array("imageFiles"),
+    async (req: Request, res: Response) => {
+      try {
+        const updatedFlight: FlightType = req.body;
+        updatedFlight.lastUpdated = new Date();
+  
+        const flight = await Flight.findOneAndUpdate(
+          {
+            _id: req.params.flightId,
+            userId: req.userId,
+          },
+          updatedFlight,
+          { new: true }
+        );
+  
+        if (!flight) {
+          return res.status(404).json({ message: "Flight not found" });
+        }
+  
+        const files = req.files as Express.Multer.File[];
+        const updatedImageUrls = await uploadImages(files);
+  
+        flight.imageUrls = [
+          ...updatedImageUrls,
+          ...(updatedFlight.imageUrls || []),
+        ];
+  
+        await flight.save();
+        res.status(201).json(flight);
+      } catch (error) {
+        res.status(500).json({ message: "Something went Wrong" });
+      }
+    }
+  );
+
 async function uploadImages(imageFiles: Express.Multer.File[]) {
     const uploadPromises = imageFiles.map(async (image) => {
       const b64 = Buffer.from(image.buffer).toString("base64");
