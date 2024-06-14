@@ -28,3 +28,12 @@ export type FlightType = {
   lastUpdated: Date;
   //bookings: BookingType[];
 };
+
+export type FlightSearchResponse = {
+  data: FlightType[];
+  pagination: {
+    total: number;
+    page: number;
+    pages: number;
+  };
+};

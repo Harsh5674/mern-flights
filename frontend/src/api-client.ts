@@ -1,6 +1,6 @@
 import { RegisterFormData } from "./pages/Register";
 import { SignInFormData } from "./pages/SignIn";
-import{ FlightType } from "../../backend/src/shared/types";
+import{ FlightSearchResponse, FlightType } from "../../backend/src/shared/types";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
 
@@ -111,6 +111,49 @@ export const register = async (formData: RegisterFormData) => {
   
     if (!response.ok) {
       throw new Error("Failed to update Flight");
+    }
+  
+    return response.json();
+  };
+
+  export type SearchParams = {
+    fromCity?: string;
+    toCity?: string;
+    departureDate?: string;
+    class?:string;
+    adultCount?: string;
+    childCount?: string;
+    page?: string;
+    name?: string[];
+    maxPrice?: string;
+    sortOption?: string;
+  };
+
+  export const searchFlights = async (
+    searchParams: SearchParams
+  ): Promise<FlightSearchResponse> => {
+    const queryParams = new URLSearchParams();
+    queryParams.append("fromCity", searchParams.fromCity || "");
+    queryParams.append("toCity", searchParams.toCity || "");
+    queryParams.append("class", searchParams.class || "");
+    queryParams.append("departureDate", searchParams.departureDate || "");
+    queryParams.append("adultCount", searchParams.adultCount || "");
+    queryParams.append("childCount", searchParams.childCount || "");
+    queryParams.append("page", searchParams.page || "");
+  
+    queryParams.append("maxPrice", searchParams.maxPrice || "");
+    queryParams.append("sortOption", searchParams.sortOption || "");
+  
+    searchParams.name?.forEach((nam) =>
+      queryParams.append("name", nam)
+    );
+  
+    const response = await fetch(
+      `${API_BASE_URL}/api/flights/search?${queryParams}`
+    );
+  
+    if (!response.ok) {
+      throw new Error("Error fetching flights");
     }
   
     return response.json();

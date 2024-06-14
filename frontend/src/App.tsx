@@ -6,6 +6,7 @@ import AddFlight from "./pages/AddFlight";
 import { useAppContext } from "./contexts/AppContext";
 import MyFlights from "./pages/MyFlights";
 import EditFlight from "./pages/EditFlight";
+import Search from "./pages/Search";
 
 
 const App = () => {
@@ -25,7 +26,7 @@ const App = () => {
               path="/search"
               element={
                 <Layout>
-                  Search Page
+                  <Search />
                 </Layout>
               }
              />

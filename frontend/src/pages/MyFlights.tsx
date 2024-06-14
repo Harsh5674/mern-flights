@@ -61,6 +61,7 @@ const MyFlights = () => {
             <div
               key={flight._id}
               data-testid="flight-card"
+              style={{ boxShadow: '4px 4px 10px rgba(0, 0, 0, 0.25)' }}
               className="flex flex-col justify-between border border-slate-300 rounded-lg p-8 gap-5"
             >
               <h2 className="text-2xl font-bold">{flight.name}</h2>
