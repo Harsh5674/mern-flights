@@ -8,7 +8,8 @@ import authRoutes from "./routes/auth";
 import cookieParser from "cookie-parser";
 import path from "path";
 import myFlightRoutes from "./routes/my-flights";
-import hotelRoutes from "./routes/flights"
+import hotelRoutes from "./routes/flights";
+import bookingRoutes from "./routes/my-flights";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -43,6 +44,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/my-flights",myFlightRoutes);
 app.use("/api/flights", hotelRoutes);
+app.use("/api/my-bookings", bookingRoutes);
 
 app.get("*", (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
