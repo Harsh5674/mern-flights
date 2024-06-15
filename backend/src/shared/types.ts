@@ -26,7 +26,18 @@ export type FlightType = {
   flightTime:string;
   imageUrls: string[];
   lastUpdated: Date;
-  //bookings: BookingType[];
+  bookings: BookingType[];
+};
+
+export type BookingType = {
+  _id: string;
+  userId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  adultCount: number;
+  childCount: number;
+  finalPrice: number;
 };
 
 export type FlightSearchResponse = {
@@ -36,4 +47,10 @@ export type FlightSearchResponse = {
     page: number;
     pages: number;
   };
+};
+
+export type PaymentIntentResponse = {
+  paymentIntentId: string;
+  clientSecret: string;
+  finalPrice: number;
 };

@@ -1,8 +1,19 @@
 import { RegisterFormData } from "./pages/Register";
 import { SignInFormData } from "./pages/SignIn";
-import{ FlightSearchResponse, FlightType } from "../../backend/src/shared/types";
+import{ FlightSearchResponse, FlightType, PaymentIntentResponse, UserType } from "../../backend/src/shared/types";
+import { BookingFormData } from "./forms/BookingForm/BookingForm";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "";
+
+export const fetchCurrentUser = async (): Promise<UserType> => {
+    const response = await fetch(`${API_BASE_URL}/api/users/me`, {
+      credentials: "include",
+    });
+    if (!response.ok) {
+      throw new Error("Error fetching user");
+    }
+    return response.json();
+  };
 
 export const register = async (formData: RegisterFormData) => {
     const response = await fetch(`${API_BASE_URL}/api/users/register`, {
@@ -166,5 +177,46 @@ export const register = async (formData: RegisterFormData) => {
     }
   
     return response.json();
+  };
+
+  export const createPaymentIntent = async (
+    flightId: string,
+    finalPrice: string
+  ): Promise<PaymentIntentResponse> => {
+    const response = await fetch(
+      `${API_BASE_URL}/api/flights/${flightId}/bookings/payment-intent`,
+      {
+        credentials: "include",
+        method: "POST",
+        body: JSON.stringify({ finalPrice }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+  
+    if (!response.ok) {
+      throw new Error("Error fetching payment intent");
+    }
+  
+    return response.json();
+  };
+
+  export const createRoomBooking = async (formData: BookingFormData) => {
+    const response = await fetch(
+      `${API_BASE_URL}/api/flights/${formData.flightId}/bookings`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify(formData),
+      }
+    );
+  
+    if (!response.ok) {
+      throw new Error("Error booking room");
+    }
   };
   

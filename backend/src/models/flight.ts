@@ -1,5 +1,15 @@
 import mongoose from "mongoose";
-import { FlightType } from "../shared/types";
+import { BookingType, FlightType } from "../shared/types";
+
+const bookingSchema = new mongoose.Schema<BookingType>({
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    email: { type: String, required: true },
+    adultCount: { type: Number, required: true },
+    childCount: { type: Number, required: true },
+    userId: { type: String, required: true },
+    finalPrice: { type: Number, required: true },
+  });
 
 const flightSchema = new mongoose.Schema<FlightType>({
     userId: { type: String, required: true },
@@ -20,7 +30,7 @@ const flightSchema = new mongoose.Schema<FlightType>({
     flightTime: {type: String, required: true},
     imageUrls: [{ type: String, required: true }],
     lastUpdated: { type: Date, required: true },
-    //bookings: [bookingSchema],
+    bookings: [bookingSchema],
 });
 
 const Flight = mongoose.model<FlightType>("Flight", flightSchema);

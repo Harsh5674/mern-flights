@@ -1,7 +1,11 @@
 import express,{Request,Response} from "express";
 import Flight from "../models/flight";
-import { FlightSearchResponse } from "../shared/types";
+import { BookingType, FlightSearchResponse } from "../shared/types";
 import { param, validationResult } from "express-validator";
+import Stripe from "stripe";
+import verifyToken from "../middlewares/auth";
+
+const stripe = new Stripe(process.env.STRIPE_API_KEY as string);
 
 const router = express.Router();
 
@@ -73,6 +77,94 @@ router.get(
       } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Error fetching flight" });
+      }
+    }
+  );
+
+  router.post(
+    "/:flightId/bookings/payment-intent",
+    verifyToken,
+    async (req: Request, res: Response) => {
+      const { finalPrice } = req.body;
+      const flightId = req.params.flightId;
+  
+      const flight = await Flight.findById(flightId);
+      if (!flight) {
+        return res.status(400).json({ message: "Flight not found" });
+      }
+  
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: finalPrice * 100,
+        currency: "INR",
+        metadata: {
+          flightId,
+          userId: req.userId,
+        },
+      });
+  
+      if (!paymentIntent.client_secret) {
+        return res.status(500).json({ message: "Error creating payment intent" });
+      }
+  
+      const response = {
+        paymentIntentId: paymentIntent.id,
+        clientSecret: paymentIntent.client_secret.toString(),
+        finalPrice,
+      };
+  
+      res.send(response);
+    }
+  );
+
+  router.post(
+    "/:flightId/bookings",
+    verifyToken,
+    async (req: Request, res: Response) => {
+      try {
+        const paymentIntentId = req.body.paymentIntentId;
+  
+        const paymentIntent = await stripe.paymentIntents.retrieve(
+          paymentIntentId as string
+        );
+  
+        if (!paymentIntent) {
+          return res.status(400).json({ message: "payment intent not found" });
+        }
+  
+        if (
+          paymentIntent.metadata.flightId !== req.params.flightId ||
+          paymentIntent.metadata.userId !== req.userId
+        ) {
+          return res.status(400).json({ message: "payment intent mismatch" });
+        }
+  
+        if (paymentIntent.status !== "succeeded") {
+          return res.status(400).json({
+            message: `payment intent not succeeded. Status: ${paymentIntent.status}`,
+          });
+        }
+  
+        const newBooking: BookingType = {
+          ...req.body,
+          userId: req.userId,
+        };
+  
+        const flight = await Flight.findOneAndUpdate(
+          { _id: req.params.flightId },
+          {
+            $push: { bookings: newBooking },
+          }
+        );
+  
+        if (!flight) {
+          return res.status(400).json({ message: "flight not found" });
+        }
+  
+        await flight.save();
+        res.status(200).send();
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "something went wrong bc mc" });
       }
     }
   );

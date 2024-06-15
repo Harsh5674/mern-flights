@@ -8,6 +8,7 @@ import MyFlights from "./pages/MyFlights";
 import EditFlight from "./pages/EditFlight";
 import Search from "./pages/Search";
 import Details from "./pages/Details";
+import Booking from "./pages/Booking";
 
 
 const App = () => {
@@ -56,6 +57,14 @@ const App = () => {
                   }
                 />
                {isLoggedIn && (<>
+                <Route
+                  path="/flight/:flightId/booking"
+                  element={
+                    <Layout>
+                      <Booking />
+                    </Layout>
+                  }
+                />
                 <Route
                   path="/add-flight"
                   element={
