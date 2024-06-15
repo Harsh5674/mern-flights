@@ -1,6 +1,7 @@
 import express,{Request,Response} from "express";
 import Flight from "../models/flight";
 import { FlightSearchResponse } from "../shared/types";
+import { param, validationResult } from "express-validator";
 
 const router = express.Router();
 
@@ -54,6 +55,28 @@ router.get("/search", async (req:Request,res:Response) => {
         res.status(500).json({ message: "Something went wrong in flights.ts route" });
     }
 });
+
+router.get(
+    "/:id",
+    [param("id").notEmpty().withMessage("Flight ID is required")],
+    async (req: Request, res: Response) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+  
+      const id = req.params.id.toString();
+  
+      try {
+        const flight = await Flight.findById(id);
+        res.json(flight);
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Error fetching flight" });
+      }
+    }
+  );
+  
 
 const constructSearchQuery = (queryParams: any) => {
     let constructedQuery: any = {};

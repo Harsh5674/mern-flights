@@ -158,4 +158,13 @@ export const register = async (formData: RegisterFormData) => {
   
     return response.json();
   };
+
+  export const fetchFlightById = async (flightId: string): Promise<FlightType> => {
+    const response = await fetch(`${API_BASE_URL}/api/flights/${flightId}`);
+    if (!response.ok) {
+      throw new Error("Error fetching Flights");
+    }
+  
+    return response.json();
+  };
   

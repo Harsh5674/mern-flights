@@ -42,17 +42,19 @@ const MyFlights = () => {
         {flightData.map((flight) => {
           // Determine prices based on flight class
           const adultPrice =
-            flight.class === "Economy"
-              ? flight.economyAdultPrice
-              : flight.class === "Business"
-              ? flight.businessAdultPrice
-              : 0;
+            flight.class.toLowerCase() === "economy"
+            ? flight.economyAdultPrice
+            : flight.class.toLowerCase() === "business"
+            ? flight.businessAdultPrice
+            : 0;
+
           const childPrice =
-            flight.class === "Economy"
-              ? flight.economyChildPrice
-              : flight.class === "Business"
-              ? flight.businessChildPrice
-              : 0;
+            flight.class.toLowerCase() === "economy"
+            ? flight.economyChildPrice
+            : flight.class.toLowerCase() === "business"
+            ? flight.businessChildPrice
+            : 0;
+
 
             const departureDate = new Date(flight.departureDate);
             const formattedDate = departureDate.toLocaleDateString();  

@@ -7,6 +7,7 @@ import { useAppContext } from "./contexts/AppContext";
 import MyFlights from "./pages/MyFlights";
 import EditFlight from "./pages/EditFlight";
 import Search from "./pages/Search";
+import Details from "./pages/Details";
 
 
 const App = () => {
@@ -30,6 +31,14 @@ const App = () => {
                 </Layout>
               }
              />
+             <Route
+              path="/detail/:flightId"
+              element={
+                <Layout>
+                  <Details />
+                </Layout>
+              }
+            />
              <Route
                 path="/register"
                 element={
