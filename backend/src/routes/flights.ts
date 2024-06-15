@@ -60,6 +60,16 @@ router.get("/search", async (req:Request,res:Response) => {
     }
 });
 
+router.get("/", async (req: Request, res: Response) => {
+  try {
+    const flights = await Flight.find().sort("-lastUpdated");
+    res.json(flights);
+  } catch (error) {
+    console.log("error", error);
+    res.status(500).json({ message: "Error fetching flights" });
+  }
+});
+
 router.get(
     "/:id",
     [param("id").notEmpty().withMessage("Flight ID is required")],
