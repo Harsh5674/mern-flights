@@ -13,7 +13,7 @@ const LatestDestinationCard = ({ flight }: Props) => {
     >
       <div className="h-[300px]">
         <img
-          src={flight.imageUrls[0]}
+          src={flight.imageUrls[1]}
           className="w-full h-full object-cover object-center"
         />
       </div>
