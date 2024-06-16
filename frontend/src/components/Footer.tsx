@@ -2,7 +2,7 @@
 function Footer(){
    return(
         <div className="bg-blue-800 py-10">
-        <div className="container mx-auto flex flex-col md:justify-between items-center">
+        <div className="container mx-auto flex flex-col sm:justify-between sm:flex-row items-center">
         <span className="text-3xl text-orange-400 font-bold tracking-tight">
             MernAir.com
         </span>
