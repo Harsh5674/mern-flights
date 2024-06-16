@@ -38,7 +38,7 @@ Start by cloning the repository to your local machine:
 
 ```bash
 git clone https://github.com/Harsh5674/mern-flights.git
-cd mern-booking-app
+cd mern-flight-management
 ```
 
 ## Backend Configuration
@@ -100,7 +100,7 @@ cd mern-booking-app
 1. **Backend**:
     - Navigate to the `backend` directory.
     - Install dependencies: `npm install`.
-    - Start the server: `npm start`.
+    - Start the server: `npm run dev`.
 
 2. **Frontend**:
     - Open a new terminal and navigate to the `frontend` directory.
