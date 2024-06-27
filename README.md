@@ -112,5 +112,5 @@ cd mern-flight-management
     - The application should now be running on `http://localhost:5173` but verify this in your command line terminal 
 
 ## Contributors
-**-Harsh Kumar**
+**-Harsh Kumar-**
 **-Lohit Pattnaik** 
